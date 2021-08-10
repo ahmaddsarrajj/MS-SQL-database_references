@@ -1,0 +1,108 @@
+                string comnd = "";
+                bool loop = true;
+                while (loop == true)
+                {
+                    //the query
+                    Console.WriteLine("Choose    c to Create   r to Read   u to Update   d to Delete  (any other charcter is not available)");
+                
+
+                char cmd = Console.ReadKey().KeyChar;
+               
+                
+                
+                    if (cmd == 'c')
+                    {
+                        Console.WriteLine("                         <--------create new racord------->                 ");
+                        //ENTER NAME
+                        Console.Write("NAME: ");
+                        string NAME_C = Console.ReadLine();
+
+                        //ENTER DOB
+                        Console.Write("DOB: ");
+                        string DOB_C = Console.ReadLine();
+
+                        //ENTER SALARY
+                        Console.Write("SALARY: ");
+                        double SALARY_C = Convert.ToDouble(Console.ReadLine());
+
+                        //ENTER NAME
+                        Console.Write("COUNTRY_ID: ");
+                        int COUNTRY_ID_C = Convert.ToInt32(Console.ReadLine());
+
+                        comnd = $"INSERT INTO EMPLOYEE (NAME , DOB , SALARY , COUNTRY_ID) VALUES ('{ NAME_C}' , '{DOB_C}' , {SALARY_C} , {COUNTRY_ID_C} )";
+                    }
+                    else if (cmd == 'r')
+                    {
+                        Console.WriteLine("                         <--------Display the data------->                 ");
+                        comnd = "SELECT  EMPLOYEE.ID,EMPLOYEE.NAME 'FIRST NAME',EMPLOYEE.DOB 'DATE OF BIRTH',COUNTRY.COUNTRY_NAME  'COUNTRY'FROM EMPLOYEE LEFT JOIN COUNTRY ON EMPLOYEE.COUNTRY_ID = COUNTRY.COUNTRY_ID";
+                    }
+                    else if (cmd == 'd')
+                    {
+                        Console.WriteLine("                         <--------Delete data------->                 ");
+                        Console.WriteLine("From which info you want to delete the row (Id / name / country)?");
+                        string keyy = Console.ReadLine();
+                        
+                        if (keyy == "Id")
+                        {
+                            Console.WriteLine("Enter the Id: ");
+                            int ID_d = Convert.ToInt32(Console.ReadLine());
+                            comnd = $"DELETE FROM EMPLOYEE WHERE ID = {ID_d}";
+                        }
+                        else if (keyy == "name")
+                        {
+                            Console.WriteLine("Enter the name: ");
+                            string NAME_D = Console.ReadLine();
+                            comnd = $"DELETE FROM EMPLOYEE WHERE name IS {NAME_D}";
+                        }
+                        else if (keyy == "country")
+                        {
+                            Console.WriteLine("Enter the country: ");
+                            string COUNTRY_D = Console.ReadLine();
+                            comnd = $"DELETE FROM EMPLOYEE WHERE country IS {COUNTRY_D}";
+                        }
+
+
+
+                    }
+                    else if (cmd == 'u')
+                    {
+                        Console.WriteLine("                         <--------Edit the data------->                 ");
+                        Console.WriteLine("What do you want to update? (name / dob / salary / country_id");
+                        string variable = Console.ReadLine();
+
+                        Console.WriteLine("Enter the Id to update it: ");
+                        int ID_U = Convert.ToInt32(Console.ReadLine());
+
+                        Console.WriteLine("the new " + variable + ": ");
+                        string variable_value = Console.ReadLine();
+
+                        comnd = $"UPDATE EMPLOYEE SET {variable}= '{variable_value}' WHERE ID = {ID_U}";
+                    }else
+                    {
+                        Console.WriteLine("This caracter is not avaible");
+                    }
+                    
+               string queryStatement = "SELECT * FROM dbo.EMPLOYEE "; //the query
+
+                using (SqlCommand _cmd = new SqlCommand(comnd, _con)) // command the query in the database connected
+                {
+                    DataTable dt = new DataTable();
+
+                    SqlDataAdapter _dap = new SqlDataAdapter(_cmd);
+
+                    _con.Open(); //open connection database with app
+                    _dap.Fill(dt);
+
+                        Console.WriteLine("continue? (Y/N)");
+                        char cont = Console.ReadKey().KeyChar;
+
+                        if (cont == 'Y' || cont == 'y')
+                        {
+                            loop = true;
+                        }
+                        else if (cont == 'N' || cont == 'n')
+                        {
+                            loop = false;
+                        }
+                    }
+connectionString
